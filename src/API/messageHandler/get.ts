@@ -9,7 +9,7 @@ const s3BucketName = process.env.S3_BUCKET_NAME || '';
 
 export const handler: Handler = async (event) => {
   //get message_id from event params
-  const message_id = event.pathParameters?.message_id;
+  const message_id = event.queryStringParameters?.message_id;
   // Return error response if message_id is not provided
   if (!message_id) {
     console.error('🔴 Message ID is required');
@@ -33,6 +33,19 @@ export const handler: Handler = async (event) => {
     };
     const result = await dynamoDB.query(dynamoDBQueryParams).promise();
 
+    //check if the result is empty
+    if (!result.Items?.length) {
+      console.error('🔴 Message ID not found');
+      return {
+        statusCode: 404,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({ status: '🔴 Message ID not found', data: '' }),
+      };
+    }
+
     //get message from result
     const messagePath = result.Items?.[0]?.message;
 
@@ -52,10 +65,11 @@ export const handler: Handler = async (event) => {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
         },
-        body: JSON.stringify({ message: '🔴 Message not found' }),
+        body: JSON.stringify({ status: '🔴 Message not found' }),
       };
     } else {
       console.log('✅ Message found');
+      const s3Data = JSON.parse(s3Result.Body.toString());
       return {
         statusCode: 200,
         headers: {
@@ -63,8 +77,8 @@ export const handler: Handler = async (event) => {
           'Access-Control-Allow-Origin': '*',
         },
         body: JSON.stringify({
-          message: '✅ Message found',
-          data: s3Result.Body.toString(),
+          status: '✅ Message found',
+          data: s3Data,
         }),
       };
     }
