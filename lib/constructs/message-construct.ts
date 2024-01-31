@@ -62,7 +62,7 @@ export class MessageContruct extends Construct {
     });
 
     // business-profile route
-    const apiGwResource = msgRestAPI.root.addResource('business-profile');
+    const apiGwResource = msgRestAPI.root.addResource('msg');
     const postMsgLambdaIntegration = new apiGw.LambdaIntegration(
       this.postMsgLamdaAlias,
     );

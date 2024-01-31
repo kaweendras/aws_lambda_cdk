@@ -3,7 +3,6 @@ import { Construct } from 'constructs';
 import { MessageContruct } from './constructs/message-construct';
 import * as apiGw from 'aws-cdk-lib/aws-apigateway';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
-import { CDK_StackId } from '../src/settings/config';
 import { env } from 'process';
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -18,7 +17,7 @@ export class MessageBackendStack extends cdk.Stack {
     });
     const msgRestAPI = new apiGw.RestApi(this, 'msgRestAPI', {
       // todo: enable WAF
-      restApiName: `restAPI_${CDK_StackId}`,
+      restApiName: `restAPI_msg_sender`,
       defaultCorsPreflightOptions: {
         allowOrigins: apiGw.Cors.ALL_ORIGINS,
         allowMethods: apiGw.Cors.ALL_METHODS,

@@ -3,20 +3,14 @@ import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { MessageBackendStack } from '../lib/message_backend-stack';
 import * as dotenv from 'dotenv';
-import { readFileSync, writeFileSync } from 'fs';
 dotenv.config();
-
-const isDeploymentAllowed = readFileSync('tempstate.txt', 'utf8');
-if (isDeploymentAllowed !== 'yes')
-  throw new Error('cannot proceed. run yarn deploy / npm run deploy command!');
-else writeFileSync('tempstate.txt', 'cleaned');
 
 const app = new cdk.App();
 
 const environment = process.env.ENVIRONMENT;
 if (!environment) throw new Error('ENVIRONMENT not set');
 
-const backendStack = new MessageBackendStack(app, 'msg_backend', {
+const backendStack = new MessageBackendStack(app, 'msgBackend', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
