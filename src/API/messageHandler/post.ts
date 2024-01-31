@@ -10,9 +10,9 @@ const s3BucketName = process.env.S3_BUCKET_NAME || '';
 export const handler: Handler = async (event) => {
   try {
     // Extract data from the API requestc
-    const metadata = JSON.parse(event.body.metadata || '');
-    const data = JSON.parse(event.body.data || '');
-    const entireMsg = JSON.parse(event.body || '');
+    const entireMsg = JSON.parse(event.body || '{}');
+    const metadata = entireMsg.metadata;
+    const data = entireMsg.data;
     if (!validateMetadata(metadata)) {
       console.log('⚠️ Invalid metadata');
 
@@ -44,7 +44,7 @@ export const handler: Handler = async (event) => {
       ExpressionAttributeValues: {
         ':b': key,
       },
-      UpdateExpression: 'SET #b = :b,',
+      UpdateExpression: 'SET #b = :b',
     };
 
     await dynamoDB.update(dynamoDBUpdateParams).promise();
@@ -59,7 +59,7 @@ export const handler: Handler = async (event) => {
       },
       body: JSON.stringify({
         message: '✅ Message data saved successfully.',
-        pdfReference: '',
+        s3bucketRef: key,
       }),
     };
   } catch (error) {
@@ -71,7 +71,10 @@ export const handler: Handler = async (event) => {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       },
-      body: JSON.stringify({ message: '🔴 Internal Server Error' }),
+      body: JSON.stringify({
+        message: '🔴 Internal Server Error',
+        error: error,
+      }),
     };
   }
 };
