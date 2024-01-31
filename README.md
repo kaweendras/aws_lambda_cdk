@@ -14,6 +14,10 @@ The following AWS services are used in this project:
 - **Amazon S3**: Used for storing files.
 - **Amazon API Gateway**: Used as the HTTP interface for the Lambda functions.
 
+  <img src="https://i.ibb.co/FDxqzL6/Screenshot-2024-01-31-220144.png" alt="Architecture Diagram">
+
+
+
 ## SETUP
 
 ### Prerequisite
