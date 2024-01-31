@@ -96,6 +96,10 @@ export class MessageContruct extends Construct {
       this.getMsgLambdaAlias,
     );
 
+    //grant permission to lambda to read from s3 bucket
+    s3Bucket.grantRead(getLambda);
+    s3Bucket.grantReadWrite(postLambda);
+
     apiGwResource.addMethod('GET', getMsgIntegration, {
       authorizationType: apiGw.AuthorizationType.NONE,
     });
