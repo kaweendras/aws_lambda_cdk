@@ -26,6 +26,7 @@ The following AWS services are used in this project:
 ### Installation
 * Installing Packages
   `npm install`
+* ENV - SET `ENVIRONMENT` to `dev`. This will show the root URL generated in cloudFromation in the terminal after deploying.
 * Boostrapping for CDK Operation `cdk bootsrap`
 * Deploying in CDK `cdk deploy`
   
