@@ -1,4 +1,4 @@
-# Serverless Message Handeling Backend with CDK
+# Serverless Message Handling Backend with CDK
 This repository contains AWS Lambda functions that are written in Node.js (TypeScript).
 
 ## Infrastructure Deployment
